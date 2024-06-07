@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import HomeScreen from './screens/HomeScreen';
-import SearchScreen from './screens/SearchScreen';
+import SearchPage from './screens/SearchScreen';
 import AnnouncementsScreen from './screens/AnnouncementsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { View, StyleSheet } from 'react-native';
@@ -62,7 +62,7 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Search" component={SearchScreen} />
+        <Tab.Screen name="Search" component={SearchPage} />
         <Tab.Screen name="Announcements" component={AnnouncementsScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>

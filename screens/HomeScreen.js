@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import profiles from '../data/dummy_profiles.json'; // Import the dummy profile data
 
 const FeedScreen = () => {
   const [showStories, setShowStories] = useState(false);
@@ -16,7 +17,9 @@ const FeedScreen = () => {
   };
 
   const renderStory = ({ item }) => (
-    <View style={styles.storyCircle} />
+    <View style={styles.storyCircle}>
+      <Image source={{ uri: item.avatar }} style={styles.avatar} />
+    </View>
   );
 
   const renderPost = ({ item }) => (
@@ -69,9 +72,9 @@ const FeedScreen = () => {
               style={styles.expandedStoriesContainer}
             >
               <FlatList
-                data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} // Dummy data for stories
+                data={profiles} // Use the dummy profile data
                 renderItem={renderStory}
-                keyExtractor={(item) => item.toString()}
+                keyExtractor={(item) => item.id.toString()}
                 horizontal
                 style={styles.storiesList}
               />
@@ -135,7 +138,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginTop: 10,
   },
-
   storiesList: {
     marginVertical: 16,
   },
@@ -145,6 +147,11 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: '#555',
     marginHorizontal: 8,
+    overflow: 'hidden',
+  },
+  avatar: {
+    width: '100%',
+    height: '100%',
   },
   postsList: {
     flex: 1,
@@ -155,11 +162,10 @@ const styles = StyleSheet.create({
     marginTop: 16,
     padding: 16,
     position: 'relative',
-    marginBottom: 20, // Increased bottom margin
-    flexDirection: 'column', // Align items in a column
-    justifyContent: 'space-between', // Space between items
+    marginBottom: 20,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
-
   postContent: {
     height: 200,
     backgroundColor: '#444',
@@ -191,8 +197,8 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   showMoreButton: {
-    alignSelf: 'flex-end', // Align to the end (bottom) of the container
-    marginTop: 10, // Add some top margin for spacing
+    alignSelf: 'flex-end',
+    marginTop: 10,
   },
   showMoreText: {
     color: '#888',

@@ -1,77 +1,156 @@
-// screens/SearchScreen.js
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
-import { CheckBox, Button, Icon, ListItem } from 'react-native-elements';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useFonts } from 'expo-font';
+import { useNavigation } from '@react-navigation/native';
+import { Icon } from 'react-native-elements';
+import profiles from '../data/dummy_profiles.json'; // Adjust the path if necessary
 
-const SearchScreen=()=> {
+const SearchPage = () => {
+  const [fontsLoaded] = useFonts({
+    'LexendDeca': require('../assets/fonts/LexendDeca-Black.ttf'),
+    'LexendDeca-SemiBold': require('../assets/fonts/LexendDeca-SemiBold.ttf'),
+    'LaBelleAurore': require('../assets/fonts/LaBelleAurore.ttf'),
+  });
+
   const [searchText, setSearchText] = useState('');
-  const [filters, setFilters] = useState({ webDevelopment: false, comps: false });
+  const navigation = useNavigation();
 
-  const toggleFilter = (filter) => {
-    setFilters({ ...filters, [filter]: !filters[filter] });
+  const handleSearch = () => {
+    console.log('Search pressed');
+    // Implement search logic here
+  };
+
+  const filteredProfiles = profiles.filter(profile => profile.name.toLowerCase().includes(searchText.toLowerCase()));
+
+  const handleFollow = (profile) => {
+    navigation.navigate('SearchProfilePage', { profile });
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search something..."
-        value={searchText}
-        onChangeText={setSearchText}
-        placeholderTextColor="#fff"
+    <View style={styles.container}>
+      <LinearGradient
+        colors={['#000000', '#52307c']}
+        style={styles.background}
       />
-      <Button
-        icon={<Icon name="search" size={20} color="white" />}
-        buttonStyle={styles.searchButton}
-        title="Search"
-      />
-      <View style={styles.filters}>
-        <Text style={styles.filterTitle}>Filter by</Text>
-        <CheckBox
-          title="Web Development"
-          checked={filters.webDevelopment}
-          onPress={() => toggleFilter('webDevelopment')}
-          containerStyle={styles.checkbox}
-          textStyle={{ color: 'white' }}
-        />
-        <CheckBox
-          title="Comps"
-          checked={filters.comps}
-          onPress={() => toggleFilter('comps')}
-          containerStyle={styles.checkbox}
-          textStyle={{ color: 'white' }}
-        />
+      <Text style={styles.header}>Search</Text>
+      <View style={styles.searchContainer}>
+        <LinearGradient
+          colors={['#141414', '#663a82']} // Gradient colors
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1.5, y: 0 }}
+          style={styles.searchInputContainer}
+        >
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search Something..."
+            placeholderTextColor="#707070"
+            value={searchText}
+            onChangeText={setSearchText}
+          />
+          <LinearGradient
+            colors={['#663a82', '#141414']} // Gradient colors
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1.5, y: 0 }}
+            style={styles.searchButton}
+          >
+            <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+              <Text style={styles.searchButtonText}>Search</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+        </LinearGradient>
       </View>
-      <Text style={styles.resultsTitle}>Search Results</Text>
-      <View style={styles.results}>
-        <ListItem bottomDivider>
-          <Icon name="music" type="font-awesome" color="white" />
-          <ListItem.Content>
-            <ListItem.Title style={{ color: 'white' }}>DJ Unicode</ListItem.Title>
-            <ListItem.Subtitle style={{ color: 'white' }}>Key descriptive words -</ListItem.Subtitle>
-          </ListItem.Content>
-        </ListItem>
-      </View>
-    </ScrollView>
+
+      <ScrollView>
+        {filteredProfiles.map(profile => (
+          <LinearGradient
+            colors={['#663a82', '#141414']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.card}
+          >
+            <View key={profile.id} style={styles.card}>
+              <View style={styles.avatarContainer}>
+                <Image
+                  source={{ uri: profile.avatar }}
+                  style={styles.avatar}
+                />
+              </View>
+              <View style={styles.cardContent}>
+                <Text style={styles.text}>{profile.name}</Text>
+                <View style={styles.textContentContainer}>
+                  <Text style={styles.textContent}>{profile.followers} Followers |</Text>
+                  <Text style={styles.textContent}>{profile.following} Following</Text>
+                </View>
+                <Text style={styles.description}>{profile.description}</Text>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity style={styles.button} onPress={() => handleFollow(profile)}>
+                    <Text style={styles.buttonText}>Follow</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </LinearGradient>
+        ))}
+      </ScrollView>
+    </View>
   );
-}
+};
+
+export default SearchPage;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1c1b22',
-    padding: 16,
+    position: 'relative',
+    padding: 10,
+  },
+  header: {
+    fontSize: 32,
+    color: 'white',
+    marginBottom: 10,
+    marginTop: 40,
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  searchInputContainer: {
+    flexDirection: 'row',
+    borderRadius: 10,
+    padding: 5,
+    marginBottom: 10,
+    flex: 1,
   },
   searchInput: {
-    backgroundColor: '#2d2c35',
+    flex: 1,
+    height: 40,
     borderRadius: 10,
-    padding: 10,
-    color: '#fff',
+    paddingLeft: 10,
+    color: 'white',
+    backgroundColor: 'transparent',
   },
   searchButton: {
-    backgroundColor: '#5c4ae2',
-    marginVertical: 10,
+    height: 40,
+    paddingHorizontal: 10,
+    marginLeft: 5,
     borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  searchButtonText: {
+    color: 'white',
+    fontFamily: 'LexendDeca-SemiBold',
+    fontSize: 15,
   },
   filters: {
     backgroundColor: '#2d2c35',
@@ -79,24 +158,66 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 10,
   },
-  filterTitle: {
-    color: '#fff',
-    fontSize: 16,
-    marginBottom: 10,
+  card: {
+    borderRadius: 20,
+    padding: 20,
+    elevation: 3,
+    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  checkbox: {
-    backgroundColor: '#2d2c35',
-    borderWidth: 0,
+  cardContent: {
+    marginLeft: 20,
+    flex: 1,
   },
-  resultsTitle: {
-    color: '#fff',
-    fontSize: 18,
+  text: {
+    color: 'white',
+    fontSize: 20,
+    fontFamily: 'LexendDeca',
+  },
+  textContentContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginVertical: 10,
   },
-  results: {
-    backgroundColor: '#2d2c35',
-    borderRadius: 10,
-    padding: 10,
+  textContent: {
+    color: 'white',
+    fontSize: 16,
+    margin: 10,
+  },
+  description: {
+    color: 'white',
+    fontSize: 14,
+    marginVertical: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  button: {
+    shadowColor: 'white',
+    shadowOffset: { height: -1, width: 3 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
+    borderRadius: 20,
+    elevation: 5,
+    height: 40,
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#3C1361',
+  },
+  buttonText: {
+    color: 'white',
+    fontFamily: 'LexendDeca-SemiBold',
+    fontSize: 15,
+  },
+  avatarContainer: {
+    zIndex: 1,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
 });
-export default SearchScreen

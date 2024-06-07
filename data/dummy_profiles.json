@@ -1,0 +1,82 @@
+[
+    {
+      "id": 1,
+      "name": "User One",
+      "followers": 150,
+      "following": 75,
+      "description": "Enthusiastic traveler and photographer. Capturing moments one snap at a time.",
+      "avatar": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 2,
+      "name": "User Two",
+      "followers": 250,
+      "following": 100,
+      "description": "Food lover and recipe creator. Sharing my culinary adventures.",
+      "avatar": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 3,
+      "name": "User Three",
+      "followers": 350,
+      "following": 200,
+      "description": "Fitness enthusiast and personal trainer. Helping you achieve your fitness goals.",
+      "avatar": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 4,
+      "name": "User Four",
+      "followers": 450,
+      "following": 300,
+      "description": "Tech geek and software developer. Passionate about coding and new technologies.",
+      "avatar": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 5,
+      "name": "User Five",
+      "followers": 550,
+      "following": 400,
+      "description": "Fashionista and lifestyle blogger. Inspiring you with the latest trends.",
+      "avatar": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 6,
+      "name": "User Six",
+      "followers": 650,
+      "following": 500,
+      "description": "Travel blogger and adventure seeker. Exploring the world one destination at a time.",
+      "avatar": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 7,
+      "name": "User Seven",
+      "followers": 750,
+      "following": 600,
+      "description": "Music producer and DJ. Creating beats that make you move.",
+      "avatar": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 8,
+      "name": "User Eight",
+      "followers": 850,
+      "following": 700,
+      "description": "Artist and illustrator. Bringing imagination to life through art.",
+      "avatar": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 9,
+      "name": "User Nine",
+      "followers": 950,
+      "following": 800,
+      "description": "Writer and poet. Penning down thoughts and emotions into words.",
+      "avatar": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 10,
+      "name": "User Ten",
+      "followers": 1050,
+      "following": 900,
+      "description": "Nature lover and environmentalist. Advocating for a greener planet.",
+      "avatar": "https://via.placeholder.com/100"
+    }
+  ]
