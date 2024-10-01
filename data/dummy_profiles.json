@@ -1,82 +1,82 @@
 [
     {
       "id": 1,
-      "name": "User One",
+      "name": "Unicode",
       "followers": 150,
       "following": 75,
       "description": "Enthusiastic traveler and photographer. Capturing moments one snap at a time.",
-      "avatar": "https://via.placeholder.com/100"
+      "avatar": "https://images.pexels.com/photos/1759530/pexels-photo-1759530.jpeg?cs=srgb&dl=pexels-jibarofoto-1759530.jpg&fm=jpg"
     },
     {
       "id": 2,
-      "name": "User Two",
+      "name": "Synapse",
       "followers": 250,
       "following": 100,
       "description": "Food lover and recipe creator. Sharing my culinary adventures.",
-      "avatar": "https://via.placeholder.com/100"
+      "avatar": "https://picsum.photos/id/235/200/300"
     },
     {
       "id": 3,
-      "name": "User Three",
+      "name": "Google Developer Student clubs",
       "followers": 350,
       "following": 200,
       "description": "Fitness enthusiast and personal trainer. Helping you achieve your fitness goals.",
-      "avatar": "https://via.placeholder.com/100"
+      "avatar": "https://picsum.photos/id/250/200/300"
     },
     {
       "id": 4,
-      "name": "User Four",
+      "name": "ACM",
       "followers": 450,
       "following": 300,
       "description": "Tech geek and software developer. Passionate about coding and new technologies.",
-      "avatar": "https://via.placeholder.com/100"
+      "avatar": "https://picsum.photos/id/259/200/300"
     },
     {
       "id": 5,
-      "name": "User Five",
+      "name": "DJS Beats",
       "followers": 550,
       "following": 400,
       "description": "Fashionista and lifestyle blogger. Inspiring you with the latest trends.",
-      "avatar": "https://via.placeholder.com/100"
+      "avatar": "https://picsum.photos/id/276/200/300"
     },
     {
       "id": 6,
-      "name": "User Six",
+      "name": "Trinity",
       "followers": 650,
       "following": 500,
       "description": "Travel blogger and adventure seeker. Exploring the world one destination at a time.",
-      "avatar": "https://via.placeholder.com/100"
+      "avatar": "https://picsum.photos/id/288/200/300"
     },
     {
       "id": 7,
-      "name": "User Seven",
+      "name": "DJS Dhadak",
       "followers": 750,
       "following": 600,
       "description": "Music producer and DJ. Creating beats that make you move.",
-      "avatar": "https://via.placeholder.com/100"
+      "avatar": "https://picsum.photos/id/268/200/300"
     },
     {
       "id": 8,
-      "name": "User Eight",
+      "name": "Codestars",
       "followers": 850,
       "following": 700,
       "description": "Artist and illustrator. Bringing imagination to life through art.",
-      "avatar": "https://via.placeholder.com/100"
+      "avatar": "https://picsum.photos/id/289/200/300"
     },
     {
       "id": 9,
-      "name": "User Nine",
+      "name": "Speedsters",
       "followers": 950,
       "following": 800,
       "description": "Writer and poet. Penning down thoughts and emotions into words.",
-      "avatar": "https://via.placeholder.com/100"
+      "avatar": "https://picsum.photos/id/256/200/300"
     },
     {
       "id": 10,
-      "name": "User Ten",
+      "name": "DJCSI",
       "followers": 1050,
       "following": 900,
       "description": "Nature lover and environmentalist. Advocating for a greener planet.",
-      "avatar": "https://via.placeholder.com/100"
+      "avatar": "https://picsum.photos/id/263/200/300"
     }
   ]

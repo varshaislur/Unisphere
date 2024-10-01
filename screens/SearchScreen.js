@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TextInput, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
-import { Icon } from 'react-native-elements';
-import profiles from '../data/dummy_profiles.json'; // Adjust the path if necessary
+import profilesData from '../data/dummy_profiles.json'; // Adjust the path if necessary
 
 const SearchPage = () => {
   const [fontsLoaded] = useFonts({
@@ -14,6 +13,7 @@ const SearchPage = () => {
   });
 
   const [searchText, setSearchText] = useState('');
+  const [profiles, setProfiles] = useState(profilesData);
   const navigation = useNavigation();
 
   const handleSearch = () => {
@@ -23,9 +23,23 @@ const SearchPage = () => {
 
   const filteredProfiles = profiles.filter(profile => profile.name.toLowerCase().includes(searchText.toLowerCase()));
 
+  const toggleFollow = (profileId) => {
+    setProfiles(prevProfiles =>
+      prevProfiles.map(profile =>
+        profile.id === profileId
+          ? { ...profile, isFollowing: !profile.isFollowing }
+          : profile
+      )
+    );
+  };
+
   const handleFollow = (profile) => {
     navigation.navigate('SearchProfilePage', { profile });
   };
+
+  if (!fontsLoaded) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
 
   return (
     <View style={styles.container}>
@@ -68,15 +82,16 @@ const SearchPage = () => {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.card}
+            key={profile.id}
           >
-            <View key={profile.id} style={styles.card}>
+            <View style={styles.cardContent}>
               <View style={styles.avatarContainer}>
                 <Image
                   source={{ uri: profile.avatar }}
                   style={styles.avatar}
                 />
               </View>
-              <View style={styles.cardContent}>
+              <View style={styles.textContainer}>
                 <Text style={styles.text}>{profile.name}</Text>
                 <View style={styles.textContentContainer}>
                   <Text style={styles.textContent}>{profile.followers} Followers |</Text>
@@ -84,8 +99,11 @@ const SearchPage = () => {
                 </View>
                 <Text style={styles.description}>{profile.description}</Text>
                 <View style={styles.buttonContainer}>
+                  <TouchableOpacity style={styles.button} onPress={() => toggleFollow(profile.id)}>
+                    <Text style={styles.buttonText}>{profile.isFollowing ? 'Following' : 'Follow'}</Text>
+                  </TouchableOpacity>
                   <TouchableOpacity style={styles.button} onPress={() => handleFollow(profile)}>
-                    <Text style={styles.buttonText}>Follow</Text>
+                    <Text style={styles.buttonText}>View Profile</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -152,47 +170,48 @@ const styles = StyleSheet.create({
     fontFamily: 'LexendDeca-SemiBold',
     fontSize: 15,
   },
-  filters: {
-    backgroundColor: '#2d2c35',
-    borderRadius: 10,
-    padding: 10,
-    marginVertical: 10,
-  },
   card: {
     borderRadius: 20,
-    padding: 20,
-    elevation: 3,
     marginVertical: 10,
+    padding: 10,
+  },
+  cardContent: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  cardContent: {
-    marginLeft: 20,
+  avatarContainer: {
+    marginRight: 20,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  textContainer: {
     flex: 1,
   },
   text: {
     color: 'white',
     fontSize: 20,
     fontFamily: 'LexendDeca',
+    marginBottom: 5,
   },
   textContentContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 10,
+    marginBottom: 5,
   },
   textContent: {
     color: 'white',
-    fontSize: 16,
-    margin: 10,
+    fontSize: 12,
+    marginRight: 10,
   },
   description: {
     color: 'white',
     fontSize: 14,
-    marginVertical: 10,
+    marginBottom: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
   },
   button: {
     shadowColor: 'white',
@@ -206,18 +225,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#3C1361',
+    marginRight: 5,
   },
   buttonText: {
     color: 'white',
     fontFamily: 'LexendDeca-SemiBold',
-    fontSize: 15,
-  },
-  avatarContainer: {
-    zIndex: 1,
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    fontSize: 13,
   },
 });

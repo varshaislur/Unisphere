@@ -1,16 +1,26 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 
 const SearchProfilePage = ({ route }) => {
   const { profile } = route.params;
 
+  const [isFollowing, setIsFollowing] = useState(profile.isFollowing);
+
   const [fontsLoaded] = useFonts({
     'LexendDeca': require('../assets/fonts/LexendDeca-Black.ttf'),
     'LexendDeca-SemiBold': require('../assets/fonts/LexendDeca-SemiBold.ttf'),
     'LaBelleAurore': require('../assets/fonts/LaBelleAurore.ttf'),
   });
+
+  const toggleFollow = () => {
+    setIsFollowing(!isFollowing);
+  };
+
+  if (!fontsLoaded) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
 
   return (
     <View style={styles.container}>
@@ -23,13 +33,13 @@ const SearchProfilePage = ({ route }) => {
           <View style={styles.card}>
             <Text style={styles.text}>{profile.name}</Text>
             <View style={styles.textContentContainer}>
-              <Text style={styles.textContent}>{profile.followers} Followers   |</Text>
+              <Text style={styles.textContent}>{profile.followers} Followers |</Text>
               <Text style={styles.textContent}>{profile.following} Following</Text>
             </View>
             <View>
               <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, { marginVertical: 20 }]}>
-                  <Text style={styles.buttonText}>Follow</Text>
+                <TouchableOpacity style={[styles.button, { marginVertical: 20 }]} onPress={toggleFollow}>
+                  <Text style={styles.buttonText}>{isFollowing ? 'Following' : 'Follow'}</Text>
                 </TouchableOpacity>
               </View>
               <Text style={styles.textContent}>

@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import profiles from '../data/dummy_profiles.json'; // Import the dummy profile data
+import profiles from '../data/dummy_profiles.json';
 
-const FeedScreen = () => {
+const FeedScreen = ({ route }) => {
+  const { image, caption } = route.params || {};
   const [showStories, setShowStories] = useState(false);
   const [showMoreMap, setShowMoreMap] = useState({});
+  const [posts, setPosts] = useState([
+    { type: 'stories' },
+    { type: 'post', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', image: 'https://picsum.photos/id/237/150/150', id: '1' },
+    { type: 'post', text: 'Another post with longer text to test show more functionality. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', image: 'https://picsum.photos/id/250/150/150', id: '2' },
+    { type: 'post', text: 'Short post.', image: 'https://picsum.photos/id/270/200/300', id: '3' }
+  ]);
+
+ useEffect(() => {
+  if (image && caption) {
+    setPosts(prevPosts => [...prevPosts, { type: 'post', image, text: caption, id: Date.now().toString() }]);
+  }
+}, [image, caption]);  
 
   const toggleStories = () => {
     setShowStories(!showStories);
@@ -29,7 +42,7 @@ const FeedScreen = () => {
       end={{ x: 1, y: 1 }}
       style={styles.postContainer}
     >
-      <View style={styles.postContent} />
+      <Image source={{ uri: item.image }} style={styles.postContent} />
       <View style={styles.postFooter}>
         <View style={styles.postHeader}>
           <Text style={styles.postAuthor}>DJ Unicode</Text>
@@ -55,7 +68,7 @@ const FeedScreen = () => {
         <View>
           <TouchableOpacity onPress={toggleStories}>
             <LinearGradient
-              colors={['#282828', '#663a82']} // Gradient colors
+              colors={['#282828', '#663a82']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1.5, y: 0 }}
               style={styles.storiesToggle}
@@ -66,13 +79,13 @@ const FeedScreen = () => {
           </TouchableOpacity>
           {showStories && (
             <LinearGradient
-              colors={['#282828', '#663a82']} // Gradient colors
+              colors={['#282828', '#663a82']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1.5, y: 0 }}
               style={styles.expandedStoriesContainer}
             >
               <FlatList
-                data={profiles} // Use the dummy profile data
+                data={profiles}
                 renderItem={renderStory}
                 keyExtractor={(item) => item.id.toString()}
                 horizontal
@@ -94,12 +107,7 @@ const FeedScreen = () => {
     >
       <Text style={styles.header}>Feed</Text>
       <FlatList
-        data={[
-          { type: 'stories' },
-          { type: 'post', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', id: '1' },
-          { type: 'post', text: 'Another post with longer text to test show more functionality. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', id: '2' },
-          { type: 'post', text: 'Short post.', id: '3' }
-        ]} // Dummy data for stories and posts
+        data={posts}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
         style={styles.postsList}
@@ -170,6 +178,7 @@ const styles = StyleSheet.create({
     height: 200,
     backgroundColor: '#444',
     borderRadius: 12,
+    marginBottom: 16,
   },
   postFooter: {
     marginTop: 16,

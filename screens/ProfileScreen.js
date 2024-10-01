@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 
@@ -10,8 +10,14 @@ const ProfileScreen = () => {
     'LaBelleAurore': require('../assets/fonts/LaBelleAurore.ttf'),
   });
 
+  const [isFollowing, setIsFollowing] = useState(false);
+
   let followers = 100;
   let following = 250;
+
+  const handleFollow = () => {
+    setIsFollowing(!isFollowing);
+  };
 
   return (
     <View style={styles.container}>
@@ -39,12 +45,17 @@ const ProfileScreen = () => {
           </View>
           <View>
             <View style={styles.buttoncontainer}>
-              <TouchableOpacity style={[styles.button, { marginVertical: 20 }]}>
-                <Text style={styles.buttontext}> Follow </Text>
-              </TouchableOpacity>
+              {/* <TouchableOpacity
+                style={[styles.button, { marginVertical: 20 }, isFollowing && styles.followingButton]}
+                onPress={handleFollow}
+              >
+                <Text style={[styles.buttontext, isFollowing && styles.followingButtonText]}>
+                  {isFollowing ? 'Following' : 'Follow'}
+                </Text>
+              </TouchableOpacity> */}
             </View>
             <Text style={styles.textcontent}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet,
             </Text>
           </View>
         </View>
@@ -89,7 +100,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 140,
   },
-
   card: {
     backgroundColor: '#141414', // Black color
     borderRadius: 30,
@@ -97,13 +107,12 @@ const styles = StyleSheet.create({
     elevation: 3, // Adjust this to move the card below the avatar
     marginTop: -20, // Adjust this to overlap with the greyContainer
   },
-
- avatarContainer: {
-  position: 'absolute',
-  top: 70, // Adjust this to position the avatar correctly
-  left: 150, // Adjust this to position avatar correctly
-  zIndex: 1, // Ensure avatar is on top of the card
-},
+  avatarContainer: {
+    position: 'absolute',
+    top: 70, // Adjust this to position the avatar correctly
+    left: 150, // Adjust this to position avatar correctly
+    zIndex: 1, // Ensure avatar is on top of the card
+  },
   avatar: {
     width: 100,
     height: 100,
@@ -136,6 +145,9 @@ const styles = StyleSheet.create({
     fontFamily: 'LexendDeca-SemiBold',
     fontSize: 15,
   },
+  followingButtonText: {
+    color: 'white',
+  },
   button: {
     shadowColor: 'white', // IOS
     shadowOffset: { height: -1, width: 3 }, // IOS (negative width for left shadow)
@@ -149,5 +161,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: 'white',
+  },
+  followingButton: {
+    backgroundColor: '#407855',
   },
 });
