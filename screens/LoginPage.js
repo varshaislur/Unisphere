@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { useFonts } from 'expo-font';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // For storing tokens
+import { Alert } from 'react-native';
+import { BASE_URL } from '../secrets';
+
 
 const LoginPage = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -27,14 +32,35 @@ const LoginPage = ({ navigation }) => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
-      setUsername("");
-      setPassword("");
-      setErrors({});
-      navigation.replace("Main");
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/login`,
+          { email: username, password }
+        );
+  
+        if (response.data.success) {
+          const token = response.data.token;
+  
+          // Store token securely in AsyncStorage for future requests
+          await AsyncStorage.setItem('token', token);
+          
+          Alert.alert('Success', 'Login successful!');
+          setUsername("");
+          setPassword("");
+          setErrors({});
+          navigation.replace("Main"); // Navigate to the main app screen
+        } else {
+          Alert.alert('Error', response.data.message || 'Login failed');
+        }
+      } catch (error) {
+        console.error(error);
+        Alert.alert('Error', 'An error occurred during login');
+      }
     }
   };
+  
 
   if (!fontsLoaded) {
     return null; // or render a loading indicator

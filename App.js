@@ -13,6 +13,7 @@ import LoginPage from './screens/LoginPage';
 import SignupPage from './screens/SignUpPage';
 import SearchProfilePage from './screens/SearchProfilePage';
 import FeedScreen from './screens/HomeScreen';
+import { AppProvider } from './context/AppContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -89,6 +90,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      <AppProvider>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="LoginPage" component={LoginPage} />
       <Stack.Screen name="SignUpPage" component={SignupPage} />
@@ -101,6 +103,7 @@ export default function App() {
           
     
       </Stack.Navigator>
+      </AppProvider>
     </NavigationContainer>
   );
 }

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert, Switch } from 'react-native';
 import { useFonts } from 'expo-font';
+import axios from 'axios';
+import { BASE_URL } from '../secrets';
 
 const SignUpPage = ({ navigation }) => {
   const [fontsLoaded] = useFonts({
@@ -11,6 +13,7 @@ const SignUpPage = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [isCommittee, setIsCommittee] = useState(false); // New state for committee checkbox
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
@@ -30,24 +33,44 @@ const SignUpPage = ({ navigation }) => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
-      setUsername("");
-      setPassword("");
-      setConfirm("");
-      setErrors({});
-      navigation.replace("Main");
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/register`,
+          {
+            username,
+            email: username,
+            password,
+            isCommittee // Include committee status in request
+          }
+        );
+
+        if (response.data.success) {
+          Alert.alert('Success', 'Registration successful!');
+          setUsername("");
+          setPassword("");
+          setConfirm("");
+          setIsCommittee(false); // Reset committee checkbox
+          setErrors({});
+          navigation.replace("LoginPage"); // Navigate to LoginPage after successful signup
+        } else {
+          Alert.alert('Error', response.data.message || 'Registration failed');
+        }
+      } catch (error) {
+        console.error(error);
+        Alert.alert('Error', 'An error occurred during registration');
+      }
     }
   };
 
-  if (!fontsLoaded) {
-    return null; // or render a loading indicator
-  }
+  if (!fontsLoaded) return null;
 
   return (
     <View style={styles.container}>
       <View style={styles.box}>
         <Text style={styles.text}>Sign Up</Text>
+        
         <Text style={styles.textthin}>Email:</Text>
         <TextInput
           style={styles.textinput}
@@ -58,6 +81,7 @@ const SignUpPage = ({ navigation }) => {
           autoCapitalize="none"
         />
         {errors.username && <Text style={styles.error}>{errors.username}</Text>}
+        
         <Text style={styles.textthin}>Password:</Text>
         <TextInput
           style={styles.textinput}
@@ -67,6 +91,7 @@ const SignUpPage = ({ navigation }) => {
           secureTextEntry
         />
         {errors.password && <Text style={styles.error}>{errors.password}</Text>}
+        
         <Text style={styles.textthin}>Confirm Password:</Text>
         <TextInput
           style={styles.textinput}
@@ -76,12 +101,25 @@ const SignUpPage = ({ navigation }) => {
           secureTextEntry
         />
         {errors.confirm && <Text style={styles.error}>{errors.confirm}</Text>}
+
+        {/* New switch for committee status */}
+        <View style={styles.switchContainer}>
+          <Text style={styles.textthin}>Is this an official committee account?</Text>
+          <Switch
+            value={isCommittee}
+            onValueChange={setIsCommittee}
+            thumbColor={isCommittee ? "#3C1361" : "#f4f3f4"}
+            trackColor={{ false: "#767577", true: "#3C1361" }}
+          />
+        </View>
+
         <TouchableOpacity
           onPress={handleSubmit}
           style={[styles.button, { margin: 20, backgroundColor: '#3C1361' }]}
         >
           <Text style={styles.buttontext}>Sign Up</Text>
         </TouchableOpacity>
+        
         <Text style={[styles.textthin, { color: '#3C1361' }]}>
           Already have an account?{' '}
           <Text style={styles.textthin} onPress={() => navigation.replace("LoginPage")}>
@@ -106,12 +144,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   button: {
-    shadowColor: 'white', // IOS
-    shadowOffset: { height: -1, width: 3 }, // IOS (negative width for left shadow)
-    shadowOpacity: 1, // IOS
-    shadowRadius: 1, //IOS
+    shadowColor: 'white',
+    shadowOffset: { height: -1, width: 3 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
     borderRadius: 20,
-    elevation: 5, // Android
+    elevation: 5,
     height: 40,
     width: 200,
     justifyContent: 'center',
@@ -154,5 +192,12 @@ const styles = StyleSheet.create({
   error: {
     color: 'red',
     marginBottom: 5,
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: 237,
+    marginVertical: 10,
   },
 });
